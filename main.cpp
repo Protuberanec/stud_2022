@@ -1,49 +1,52 @@
 #include <QCoreApplication>
 #include <QDebug>
+#include <windows.h>
 
-int compare(int a, int b) {
-    return ((a & 0x00FF0000) - (b & 0x00FF0000)) > 0 ? 1 :
-           ((a & 0x00FF0000) - (b & 0x00FF0000)) < 0 ? -1 : 0;
-}
+//origin, grapher, gnuplot, excel, ....
+//100\t1\t1\t1\t1\t1\n
+//299\t4\t
 
 
-struct Res {
-    int resA;
-    int resB;
-    Res() : resA(0), resB(0) {}
-};
+void sort1(int* a, int _size) {}
+void sort2(int* a, int _size) {}
+void sort3(int* a, int _size) {}
+void sort4(int* a, int _size) {}
+void sort5(int* a, int _size) {}
+void sort6(int* a, int _size) {}
+void sort7(int* a, int _size) {}
 
-struct Res compInt(int a, int b) {
-    struct Res tempRes;
+void randomFill(int* a, int _size) {}
+void durSortToFile(long int time, int _size, int numSort) {}
+void nextSize() {}
 
-    unsigned char *pA = (unsigned char*)&a;
-
-    for (int i = 0; i < 4; i++) {
-        unsigned char *pB = (unsigned char*)&b;
-        for (int j = 0; j < 4; j++) {
-            qDebug() << *pA << " " << *pB;
-            if (*pA == *pB) {
-                tempRes.resA++;
-            }
-            pB++;
-        }
-        pA++;
-    }
-
-    return tempRes;
-}
-
-void printSym() {
-    for (int i = 0; i < 256; i++) {
-        qDebug() << (int)i << " - " << (char)i;
-    }
-}
 
 int main(int argc, char *argv[])
 {
     QCoreApplication a(argc, argv);
 
-    compInt(0x78219802, 0x789901FF);
+    int *my_array;
+
+    for (int size = 100; size < 1000000; size++) {
+        my_array = new int [size];
+        randomFill(my_array, size);
+
+        long int time = GetTickCount();
+        sort1(my_array, size);
+        time = GetTickCount() - time;
+        durSortToFile(time, size, 1);
+
+        randomFill(my_array, size);
+        time = GetTickCount();
+        sort2(my_array, size);
+        time = GetTickCount() - time;
+        durSortToFile(time, size, 2);
+
+
+        nextSize();
+        size += 100;
+        delete [] my_array;
+    }
+
 
     return a.exec();
 }
